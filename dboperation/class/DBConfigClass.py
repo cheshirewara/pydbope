@@ -56,26 +56,25 @@ class DBConfig:
         return None if not collection in self.__inner[sec] else self.__inner[sec][collection]
 
     # get connection string
+    def get_con_str_min(self, scheme: str, sec: str, *, server: str = 'server', port: str = 'port'):
+        return "%s://%s:%s" % (scheme, self.get_server(sec, server=server), self.get_port(sec, port=port))
 
-    def get_con_str(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password',
-                    server: str = 'server', port: str = 'port'):
+    def get_con_str_short(self, scheme: str, sec: str, *, user: str = 'user', server: str = 'server', port: str = 'port'):
+        return "%s://%s@%s:%s" % (scheme, self.get_user(sec, user=user), self.get_server(sec, server=server), self.get_port(sec, port=port))
+
+    def get_con_str(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password', server: str = 'server', port: str = 'port'):
         return "%s://%s:%s@%s:%s" % (
-            scheme, self.__inner[sec][user], self.__inner[sec][password], self.__inner[sec][server], self.__inner[sec][port])
+            scheme, self.get_user(sec, user=user), self.get_password(sec, password=password), self.get_server(sec, server=server), self.get_port(sec, port=port))
 
-    def get_con_str_long(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password',
-                         server: str = 'server', port: str = 'port', database: str = 'database'):
+    def get_con_str_long(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password', server: str = 'server', port: str = 'port', database: str = 'database'):
         return "%s://%s:%s@%s:%s/%s" % (
-            scheme, self.__inner[sec][user], self.__inner[sec][password], self.__inner[sec][server], self.__inner[sec][port], self.__inner[sec][database])
+            scheme, self.get_user(sec, user=user), self.get_password(sec, password=password), self.get_server(sec, server=server), self.get_port(sec, port=port), self.get_database(sec, database=database))
 
 
 if __name__ == '__main__':
     print(DBConfig().get_config())
     print(DBConfig().get_inner())
-    print(DBConfig().get_user('MONGODB'))
-    print(DBConfig().get_password('MONGODB'))
-    print(DBConfig().get_server('MONGODB'))
-    print(DBConfig().get_port('MONGODB'))
-    print(DBConfig().get_database('MONGODB'))
-    print(DBConfig().get_collection('MONGODB'))
-    print(DBConfig().get_con_str_long('postgresql', sec='POSTGRESQL'))
+    print(DBConfig().get_con_str_min('mongodb', sec='MONGODB'))
+    print(DBConfig().get_con_str_long('mongodb', sec='MONGODB'))
+    print(DBConfig().get_con_str_short('mongodb', sec='MONGODB'))
     print(DBConfig().get_con_str('mongodb', sec='MONGODB'))
