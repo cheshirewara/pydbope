@@ -1,9 +1,8 @@
-# required modules import
 import os
-import sys
+# import sys
+# sys.path.append(os.path.dirname(__file__))
 
 import errno
-# import const as cst
 
 
 class DBQuery:
@@ -14,7 +13,7 @@ class DBQuery:
     def __init__(self, query_path: str = None):
         if query_path is None:
             query_path = os.path.join(os.path.dirname(
-                __file__), '..', 'sample_query.sql')
+                __file__), 'sample_query.sql')
         # check sql file exist
         if not os.path.exists(query_path):
             raise FileNotFoundError(

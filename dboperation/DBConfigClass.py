@@ -1,10 +1,9 @@
-# required modules import
 import os
-import sys
-
+# import sys
+# sys.path.append(os.path.dirname(__file__))
+from __dboperation_helper import Helper
 import errno
 import configparser
-# import const as cst
 
 
 class DBConfig:
@@ -14,8 +13,7 @@ class DBConfig:
 
     def __init__(self, ini_path: str = None):
         if ini_path is None:
-            ini_path = os.path.join(os.path.dirname(
-                __file__), '..', '.db.ini.tmp')
+            ini_path = os.path.join(os.path.dirname(__file__), '.db.ini.tmp')
         # check ini file exist
         if not os.path.exists(ini_path):
             raise FileNotFoundError(
@@ -56,15 +54,20 @@ class DBConfig:
         return None if not collection in self.__inner[sec] else self.__inner[sec][collection]
 
     # get connection string
-    def get_con_str_min(self, scheme: str, sec: str, *, server: str = 'server', port: str = 'port'):
+    def __get_con_str_min(self, scheme: str, sec: str, *, server: str = 'server', port: str = 'port'):
         return "%s://%s:%s" % (scheme, self.get_server(sec, server=server), self.get_port(sec, port=port))
 
-    def get_con_str_short(self, scheme: str, sec: str, *, user: str = 'user', server: str = 'server', port: str = 'port'):
-        return "%s://%s@%s:%s" % (scheme, self.get_user(sec, user=user), self.get_server(sec, server=server), self.get_port(sec, port=port))
+    def __get_con_str_short(self, scheme: str, sec: str, *, user: str = 'user', server: str = 'server', port: str = 'port'):
+        if Helper.is_Empty(user):
+            return self.__get_con_str_min(scheme, self.get_server(sec, server=server), self.get_port(sec, port=port))
+        else:
+            return "%s://%s@%s:%s" % (scheme, self.get_user(sec, user=user), self.get_server(sec, server=server), self.get_port(sec, port=port))
 
     def get_con_str(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password', server: str = 'server', port: str = 'port'):
-        return "%s://%s:%s@%s:%s" % (
-            scheme, self.get_user(sec, user=user), self.get_password(sec, password=password), self.get_server(sec, server=server), self.get_port(sec, port=port))
+        if Helper.is_Empty(password):
+            return self.__get_con_str_short(scheme, self.get_user(sec, user=user), self.get_server(sec, server=server), self.get_port(sec, port=port))
+        else:
+            return "%s://%s:%s@%s:%s" % (scheme, self.get_user(sec, user=user), self.get_password(sec, password=password), self.get_server(sec, server=server), self.get_port(sec, port=port))
 
     def get_con_str_long(self, scheme: str, sec: str, *, user: str = 'user', password: str = 'password', server: str = 'server', port: str = 'port', database: str = 'database'):
         return "%s://%s:%s@%s:%s/%s" % (
@@ -74,7 +77,5 @@ class DBConfig:
 if __name__ == '__main__':
     print(DBConfig().get_config())
     print(DBConfig().get_inner())
-    print(DBConfig().get_con_str_min('mongodb', sec='MONGODB'))
     print(DBConfig().get_con_str_long('mongodb', sec='MONGODB'))
-    print(DBConfig().get_con_str_short('mongodb', sec='MONGODB'))
     print(DBConfig().get_con_str('mongodb', sec='MONGODB'))
