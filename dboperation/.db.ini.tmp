@@ -5,8 +5,8 @@ server=<url>
 port=<port>
 database=<db>
 [MONGODB]
-user=<user>
-password=<password>
+#user=<user>
+#password=<password>
 server=<url>
 port=<port>
 database=<db>

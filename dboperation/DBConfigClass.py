@@ -61,11 +61,9 @@ class DBConfig:
 
     def __get_con_str_short(self, scheme: str, sec: str, *,
                             user: str = 'user', server: str = 'server', port: str = 'port'):
-        if Helper.is_Empty(user):
+        if Helper.is_Empty(self.get_user(sec, user=user)):
             return self.__get_con_str_min(
-                scheme, sec,
-                server=self.get_server(sec, server=server),
-                port=self.get_port(sec, port=port))
+                scheme, sec, server=server, port=port)
         else:
             return "%s://%s@%s:%s" % (
                 scheme, self.get_user(sec, user=user),
@@ -75,12 +73,9 @@ class DBConfig:
     def get_con_str(self, scheme: str, sec: str, *,
                     user: str = 'user', password: str = 'password', server: str = 'server',
                     port: str = 'port'):
-        if Helper.is_Empty(password):
+        if Helper.is_Empty(self.get_password(sec, password=password)):
             return self.__get_con_str_short(
-                scheme, sec,
-                user=self.get_user(sec, user=user),
-                server=self.get_server(sec, server=server),
-                port=self.get_port(sec, port=port))
+                scheme, sec, user=user, server=server, port=port)
         else:
             return "%s://%s:%s@%s:%s" % (
                 scheme, self.get_user(sec, user=user),
