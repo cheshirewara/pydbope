@@ -2,11 +2,15 @@ class Helper:
 
     @staticmethod
     def is_Empty(obj):
-        if not obj.strip():
-            return True
+        flag = False
+        if obj is None:
+            flag = True
+        elif not obj.strip():
+            flag = True
         else:
-            return False
+            flag = False
+        return flag
 
 
 if __name__ == '__main__':
-    print(PyDBOpeHelper.is_Empty('password'))
+    print(Helper.is_Empty(None))
