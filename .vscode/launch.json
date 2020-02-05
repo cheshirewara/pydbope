@@ -12,13 +12,6 @@
             "module": "dboperation"
         },
         {
-            "name": "Python: module-local",
-            "type": "python",
-            "request": "launch",
-            "module": "dboperation",
-            "args": ["local"]
-        },
-        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
