@@ -1,7 +1,7 @@
 import os
 import errno
-import psycopg2 as pg
-import pandas.io.sql as psql
+# import psycopg2 as pg
+# import pandas.io.sql as psql
 
 
 class DBControl:
@@ -30,11 +30,13 @@ class DBControl:
     # private method
 
     def __get_connection(self):
+        import psycopg2 as pg
         return pg.connect(self.get_con_str())
 
     # public method
 
     def get_db_dataframe(self, sql: str = None):
+        import pandas.io.sql as psql
         if sql is None:
             raise ValueError(
                 errno.EINVAL, os.strerror(errno.EINVAL), 'sql')
