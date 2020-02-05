@@ -13,7 +13,7 @@ class DBConfig:
 
     def __init__(self, ini_path: str = None):
         if ini_path is None:
-            ini_path = os.path.join(os.path.dirname(__file__), '.db.ini.tmp')
+            ini_path = os.path.join(os.path.dirname(__file__), 'tmp.db.ini')
         # check ini file exist
         if not os.path.exists(ini_path):
             raise FileNotFoundError(
