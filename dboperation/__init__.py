@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.dirname(__file__))
 from DBConfigClass import DBConfig
 from DBQueryClass import DBQuery
+from DBControlClass import DBControl
 
 
 def Hello():
@@ -11,5 +12,3 @@ def Hello():
 
 if __name__ == '__main__':
     print(Hello())
-    print(DBQuery().get_query_string())
-    print(DBConfig().get_con_str('mongo', 'MONGODB'))
