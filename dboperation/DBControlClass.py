@@ -35,13 +35,16 @@ class DBControl:
 
     # public method
 
-    def get_db_dataframe(self, sql: str = None):
+    def get_db_dataframe(self, sql: str = None, param: dict = None):
         import pandas.io.sql as psql
         if sql is None:
             raise ValueError(
                 errno.EINVAL, os.strerror(errno.EINVAL), 'sql')
+        if param is None:
+            param = {}
+
         with self.__get_connection() as con:
-            df = psql.read_sql(sql, con)
+            df = psql.read_sql(sql, con, params=param)
         return df
 
 
